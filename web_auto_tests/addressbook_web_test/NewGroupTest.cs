@@ -11,6 +11,9 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Interactions;
 using NUnit.Framework;
+
+namespace addressbook_web_test
+{ 
 [TestFixture]
 public class NewgroupTest
 {
@@ -30,23 +33,66 @@ public class NewgroupTest
         driver.Quit();
     }
     [Test]
-    public void newgroup()
+    public void Newgroup()
     {
-        driver.Navigate().GoToUrl("http://localhost/addressbook/");
-        driver.Manage().Window.Size = new System.Drawing.Size(758, 984);
-        driver.FindElement(By.Name("user")).SendKeys("admin");
-        driver.FindElement(By.Name("pass")).SendKeys("secret");
-        driver.FindElement(By.CssSelector("input:nth-child(7)")).Click();
-        driver.FindElement(By.LinkText("groups")).Click();
-        driver.FindElement(By.Name("new")).Click();
-        driver.FindElement(By.Name("group_name")).Click();
-        driver.FindElement(By.Name("group_name")).SendKeys("new");
-        driver.FindElement(By.Name("group_header")).Click();
-        driver.FindElement(By.Name("group_header")).SendKeys("best");
-        driver.FindElement(By.Name("group_footer")).Click();
-        driver.FindElement(By.Name("group_footer")).SendKeys("group");
-        driver.FindElement(By.Name("submit")).Click();
-        driver.FindElement(By.LinkText("group page")).Click();
+        OpenHomePage();
+        Login("admin", "secret");
+        GoToGroupsPage();
+        InitGroupCreation();
+        GroupFormData group = new GroupFormData("new");
+            group.Footer = "123";
+        FillGroupForm(group);
+        SubmitGroupCreation();
+        ReturnToGroupsPage();
+        Logout();
+    }
+        
+    private void Logout()
+    {
         driver.FindElement(By.LinkText("Logout")).Click();
     }
+
+    private void ReturnToGroupsPage()
+    {
+        driver.FindElement(By.LinkText("group page")).Click();
+    }
+
+    private void SubmitGroupCreation()
+    {
+        driver.FindElement(By.Name("submit")).Click();
+    }
+
+    private void FillGroupForm(GroupFormData group)
+    {
+        driver.FindElement(By.Name("group_name")).Click();
+        driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
+        driver.FindElement(By.Name("group_header")).Click();
+        driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
+        driver.FindElement(By.Name("group_footer")).Click();
+        driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+    }
+
+    private void InitGroupCreation()
+    {
+        driver.FindElement(By.Name("new")).Click();
+    }
+
+    private void GoToGroupsPage()
+    {
+        driver.FindElement(By.LinkText("groups")).Click();
+    }
+
+    private void Login(string username, string password)
+    {
+        driver.Manage().Window.Size = new System.Drawing.Size(758, 984);
+        driver.FindElement(By.Name("user")).SendKeys(username);
+        driver.FindElement(By.Name("pass")).SendKeys(password);
+        driver.FindElement(By.CssSelector("input:nth-child(7)")).Click();
+    }
+
+    private void OpenHomePage()
+    {
+        driver.Navigate().GoToUrl("http://localhost/addressbook/");
+    }
+}
 }
