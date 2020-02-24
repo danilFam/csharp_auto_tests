@@ -27,10 +27,11 @@ namespace addressbook_web_test
             OpenHomePage();
             Login("admin", "secret");
             InitAddNewContact();
-            ContactFormData contact = new ContactFormData("new contact");
+            ContactFormData contact = new ContactFormData("another new contact");
             contact.Lastname = "qwe";
             contact.Address = "street";
             contact.Email = "qwe@ewq.com";
+            contact.Company = "best company";
             FillContactForm(contact);
             SubmitContactForm();
             ReturnToHomePage();
