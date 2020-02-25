@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using NUnit.Framework;
+using System.IO;
 
 namespace addressbook_web_test
 {
@@ -55,7 +56,7 @@ namespace addressbook_web_test
 
         private void FillContactForm(ContactFormData contact)
         {
-            var path = System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
             driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(path);
             driver.FindElement(By.Name("firstname")).Click();
             driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);

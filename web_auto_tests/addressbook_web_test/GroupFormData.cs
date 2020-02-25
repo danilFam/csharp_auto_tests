@@ -10,6 +10,6 @@
         {
             this.Name = name;
         }
-        
+
     }
 }
