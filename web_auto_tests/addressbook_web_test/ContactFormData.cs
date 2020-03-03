@@ -1,6 +1,6 @@
 ﻿namespace addressbook_web_test
 {
-    class ContactFormData
+   public class ContactFormData
     {
         public ContactFormData(string firstname)
         {
@@ -25,7 +25,5 @@
         public string Address2 { get; set; } = "";
         public string Phone2 { get; set; } = "";
         public string Notes { get; set; } = "";
-
-
     }
 }

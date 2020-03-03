@@ -1,6 +1,6 @@
 ﻿namespace addressbook_web_test
 {
-    class GroupFormData
+    public class GroupFormData
     {
         public string Name { get; set; }
         public string Header { get; set; } = "";
