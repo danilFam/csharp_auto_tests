@@ -6,20 +6,19 @@ namespace addressbook_web_test
     public class NewGroupTest : TestBase
     {
 
-
         [Test]
         public void NewGroup()
         {
-            OpenHomePage();
-            Login("admin", "secret");
-            GoToGroupsPage();
-            InitGroupCreation();
-            GroupFormData group = new GroupFormData("new");
-            group.Footer = "123";
-            FillGroupForm(group);
-            SubmitGroupCreation();
-            ReturnToGroupsPage();
-            Logout();
+            navigationHelper.OpenHomePage();
+            loginHelper.Login("admin", "secret");
+            navigationHelper.GoToGroupsPage();
+            groupHelper.InitGroupCreation();
+            GroupFormData group = new GroupFormData("new test");
+            group.Footer = "asd";
+            groupHelper.FillGroupForm(group);
+            groupHelper.SubmitGroupCreation();
+            groupHelper.ReturnToGroupsPage();
+            loginHelper.Logout();
         }
     }
 }
