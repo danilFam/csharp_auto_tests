@@ -10,19 +10,19 @@ namespace addressbook_web_test
         [Test]
         public void NewContact()
         {
-            navigationHelper.OpenHomePage();
-            loginHelper.Login("admin", "secret");
-            contactHelper.InitAddNewContact();
+            app.Navigator.OpenHomePage();
+            app.Auth.Login("admin", "secret");
+            app.Contacts.InitAddNewContact();
             ContactFormData contact = new ContactFormData("another new contact");
             contact.Lastname = "vasya";
             contact.Address = "bulvar";
             contact.Email = "asd@qwezq.com";
             contact.Company = "best company";
             contact.Address2 = "house";
-            contactHelper.FillContactForm(contact);
-            contactHelper.SubmitContactForm();
-            contactHelper.ReturnToHomePage();
-            loginHelper.Logout();
+            app.Contacts.FillContactForm(contact);
+            app.Contacts.SubmitContactForm();
+            app.Contacts.ReturnToHomePage();
+            app.Auth.Logout();
         }
     }
 }

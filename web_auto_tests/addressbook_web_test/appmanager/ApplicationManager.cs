@@ -1,10 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using NUnit.Framework;
 
 namespace addressbook_web_test
 {
-    public class TestBase
+    public class ApplicationManager
     {
         protected IWebDriver driver;
         protected LoginHelper loginHelper;
@@ -12,8 +11,7 @@ namespace addressbook_web_test
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
-        [SetUp]
-        public void SetUp()
+        public ApplicationManager()
         {
             driver = new ChromeDriver();
             loginHelper = new LoginHelper(driver);
@@ -22,11 +20,26 @@ namespace addressbook_web_test
             contactHelper = new ContactHelper(driver);
         }
 
-        [TearDown]
-        protected void TearDown()
+        public void Stop()
         {
             driver.Quit();
         }
-
+        public LoginHelper Auth
+        {
+            get { return loginHelper; }
+        }
+        public NavigationHelper Navigator
+        {
+            get { return navigationHelper; }
+        }
+        public GroupHelper Groups
+        {
+            get { return groupHelper; }
+        }
+        public ContactHelper Contacts
+        {
+            get { return contactHelper; }
+        }
+           
     }
 }
