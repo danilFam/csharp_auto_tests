@@ -10,6 +10,8 @@ namespace addressbook_web_test
         public void SetUp()
         {
             app = new ApplicationManager();
+            app.Navigator.OpenHomePage();
+            app.Auth.Login("admin", "secret");
         }
 
         [TearDown]

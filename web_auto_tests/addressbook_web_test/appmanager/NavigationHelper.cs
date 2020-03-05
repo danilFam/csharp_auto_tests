@@ -5,7 +5,8 @@ namespace addressbook_web_test
     public class NavigationHelper : HelperBase
     {
 
-        public NavigationHelper(IWebDriver driver) : base (driver)
+        public NavigationHelper(ApplicationManager manager) 
+            : base (manager)
         {
         }
         public void OpenHomePage()

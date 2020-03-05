@@ -7,15 +7,29 @@ namespace addressbook_web_test
     public class ContactHelper : HelperBase
     {
 
-        public ContactHelper (IWebDriver driver) : base(driver)
+        public ContactHelper (ApplicationManager manager) 
+            : base(manager)
         {
-        }
-        public void InitAddNewContact()
-        {
-            driver.FindElement(By.LinkText("add new")).Click();
         }
 
-        public void FillContactForm(ContactFormData contact)
+        public ContactHelper Create(ContactFormData contact)
+        {
+            InitAddNewContact();
+            FillContactForm(contact);
+            SubmitContactForm();
+            ReturnToHomePage();
+            return this;
+        }
+
+
+
+        public ContactHelper InitAddNewContact()
+        {
+            driver.FindElement(By.LinkText("add new")).Click();
+            return this;
+        }
+
+        public ContactHelper FillContactForm(ContactFormData contact)
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
             driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(path);
@@ -56,16 +70,19 @@ namespace addressbook_web_test
             driver.FindElement(By.Name("phone2")).SendKeys(contact.Phone2);
             driver.FindElement(By.Name("notes")).Click();
             driver.FindElement(By.Name("notes")).SendKeys(contact.Notes);
+            return this;
         }
 
-        public void SubmitContactForm()
+        public ContactHelper SubmitContactForm()
         {
             driver.FindElement(By.CssSelector("input[name=submit]")).Click();
+            return this;
         }
 
-        public void ReturnToHomePage()
+        public ContactHelper ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home page")).Click();
+            return this;
         }
     }
 }

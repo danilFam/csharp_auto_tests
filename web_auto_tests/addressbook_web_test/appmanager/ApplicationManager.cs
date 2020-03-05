@@ -14,10 +14,14 @@ namespace addressbook_web_test
         public ApplicationManager()
         {
             driver = new ChromeDriver();
-            loginHelper = new LoginHelper(driver);
-            navigationHelper = new NavigationHelper(driver);
-            groupHelper = new GroupHelper(driver);
-            contactHelper = new ContactHelper(driver);
+            loginHelper = new LoginHelper(this);
+            navigationHelper = new NavigationHelper(this);
+            groupHelper = new GroupHelper(this);
+            contactHelper = new ContactHelper(this);
+        }
+        public IWebDriver Driver
+        {
+            get { return driver; }
         }
 
         public void Stop()
@@ -40,6 +44,7 @@ namespace addressbook_web_test
         {
             get { return contactHelper; }
         }
-           
+
+
     }
 }
