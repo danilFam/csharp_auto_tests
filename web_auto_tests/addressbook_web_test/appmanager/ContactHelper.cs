@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
+using NUnit.Framework;
 using System.IO;
 
 namespace addressbook_web_test
@@ -7,7 +7,7 @@ namespace addressbook_web_test
     public class ContactHelper : HelperBase
     {
 
-        public ContactHelper (ApplicationManager manager) 
+        public ContactHelper(ApplicationManager manager)
             : base(manager)
         {
         }
@@ -21,7 +21,20 @@ namespace addressbook_web_test
             return this;
         }
 
-
+        public ContactHelper Modify(ContactFormData newData)
+        {
+            InitContactModification();
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToHomePage();
+            return this;
+        }
+        public ContactHelper Remove()
+        {
+            SelectContact();
+            RemoveContact();
+            return this;
+        }
 
         public ContactHelper InitAddNewContact()
         {
@@ -41,7 +54,6 @@ namespace addressbook_web_test
             driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
             driver.FindElement(By.Name("nickname")).Click();
             driver.FindElement(By.Name("nickname")).SendKeys(contact.Nickname);
-            driver.FindElement(By.Name("theform")).Click();
             driver.FindElement(By.Name("title")).Click();
             driver.FindElement(By.Name("title")).SendKeys(contact.Title);
             driver.FindElement(By.Name("company")).Click();
@@ -82,6 +94,27 @@ namespace addressbook_web_test
         public ContactHelper ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home page")).Click();
+            return this;
+        }
+        public ContactHelper RemoveContact()
+        {
+            driver.FindElement(By.CssSelector("#content > form:nth-child(10) > div:nth-child(8) > input[type=button]")).Click();
+            driver.SwitchTo().Alert().Accept();
+            return this;
+        }
+        public ContactHelper SelectContact()
+        {
+            driver.FindElement(By.Name("selected[]")).Click();
+            return this;
+        }
+        public ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+        public ContactHelper InitContactModification()
+        {
+            driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(8) > a > img")).Click();
             return this;
         }
     }

@@ -5,11 +5,10 @@ namespace addressbook_web_test
     public class GroupHelper : HelperBase
     {
 
-        public GroupHelper(ApplicationManager manager) 
+        public GroupHelper(ApplicationManager manager)
             : base(manager)
         {
         }
-
         public GroupHelper Create(GroupFormData group)
         {
             manager.Navigator.GoToGroupsPage();
@@ -19,7 +18,37 @@ namespace addressbook_web_test
             ReturnToGroupsPage();
             return this;
         }
+        public GroupHelper Modify(GroupFormData newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup();
+            InitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+            return this;
+        }
 
+        public GroupHelper Remove()
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup();
+            RemoveGroup();
+            ReturnToGroupsPage();
+            return this;
+        }
+
+        public GroupHelper SelectGroup()
+        {
+            driver.FindElement(By.Name("selected[]")).Click();
+            return this;
+        }
+
+        public GroupHelper RemoveGroup()
+        {
+            driver.FindElement(By.Name("delete")).Click();
+            return this;
+        }
 
         public GroupHelper InitGroupCreation()
         {
@@ -46,6 +75,16 @@ namespace addressbook_web_test
         public GroupHelper ReturnToGroupsPage()
         {
             driver.FindElement(By.LinkText("group page")).Click();
+            return this;
+        }
+        public GroupHelper SubmitGroupModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+        public GroupHelper InitGroupModification()
+        {
+            driver.FindElement(By.Name("edit")).Click();
             return this;
         }
     }
