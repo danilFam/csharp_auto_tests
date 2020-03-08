@@ -19,27 +19,15 @@ namespace addressbook_web_test
             groupHelper = new GroupHelper(this);
             contactHelper = new ContactHelper(this);
         }
-        public IWebDriver Driver
-        {
-            get { return driver; }
-        }
+        public IWebDriver Driver => driver;
 
         public void Stop()
         {
             driver.Quit();
         }
-        public LoginHelper Auth
-        {
-            get { return loginHelper; }
-        }
-        public NavigationHelper Navigator
-        {
-            get { return navigationHelper; }
-        }
-        public GroupHelper Groups
-        {
-            get { return groupHelper; }
-        }
+        public LoginHelper Auth => loginHelper;
+        public NavigationHelper Navigator => navigationHelper;
+        public GroupHelper Groups => groupHelper;
         public ContactHelper Contacts => contactHelper;
     }
 }
