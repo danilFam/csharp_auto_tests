@@ -8,8 +8,8 @@ namespace addressbook_web_test
         [Test]
         public void ContactRemove()
         {
-            app.Contacts.Remove();
-            app.Auth.Logout();
+            const int contactToRemoveIndex = 1;
+            app.Contacts.Remove(contactToRemoveIndex);
         }
     }
 }

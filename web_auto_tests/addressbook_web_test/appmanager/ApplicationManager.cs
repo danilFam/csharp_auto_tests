@@ -40,11 +40,6 @@ namespace addressbook_web_test
         {
             get { return groupHelper; }
         }
-        public ContactHelper Contacts
-        {
-            get { return contactHelper; }
-        }
-
-
+        public ContactHelper Contacts => contactHelper;
     }
 }

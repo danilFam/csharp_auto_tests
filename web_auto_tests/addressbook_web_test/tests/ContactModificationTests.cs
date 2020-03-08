@@ -15,8 +15,9 @@ namespace addressbook_web_test
             newData.Email = "modify@test.com";
             newData.Company = "modify";
             newData.Address2 = "modify";
-            app.Contacts.Modify(newData);
-            app.Auth.Logout();
+            const int contactToModifyIndex = 1;
+
+            app.Contacts.Modify(newData, contactToModifyIndex);
         }
     }
 }

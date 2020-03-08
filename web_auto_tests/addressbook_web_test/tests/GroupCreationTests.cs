@@ -3,7 +3,7 @@
 namespace addressbook_web_test
 {
     [TestFixture]
-    public class NewGroupTest : TestBase
+    public class GroupCreationTests : TestBase
     {
 
         [Test]
@@ -12,7 +12,6 @@ namespace addressbook_web_test
             GroupFormData group = new GroupFormData("new test");
             group.Footer = "asd";
             app.Groups.Create(group);
-            app.Auth.Logout();
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace addressbook_web_test
 {
     [TestFixture]
-   public class GroupModificationTests : TestBase
+    public class GroupModificationTests : TestBase
     {
         [Test]
 
@@ -13,8 +13,8 @@ namespace addressbook_web_test
             newData.Footer = "modify";
             newData.Header = "modify";
 
-            app.Groups.Modify(newData);
-            app.Auth.Logout();
+            const int groupToModifyIndex = 1;
+            app.Groups.Modify(newData, groupToModifyIndex);
         }
     }
 }

@@ -18,10 +18,10 @@ namespace addressbook_web_test
             ReturnToGroupsPage();
             return this;
         }
-        public GroupHelper Modify(GroupFormData newData)
+        public GroupHelper Modify(GroupFormData newData, int groupToModifyIndex)
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup();
+            SelectGroup(groupToModifyIndex);
             InitGroupModification();
             FillGroupForm(newData);
             SubmitGroupModification();
@@ -29,18 +29,18 @@ namespace addressbook_web_test
             return this;
         }
 
-        public GroupHelper Remove()
+        public GroupHelper Remove(int groupToRemoveIndex)
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup();
+            SelectGroup(groupToRemoveIndex);
             RemoveGroup();
             ReturnToGroupsPage();
             return this;
         }
 
-        public GroupHelper SelectGroup()
+        public GroupHelper SelectGroup(int groupToRemoveIndex)
         {
-            driver.FindElement(By.Name("selected[]")).Click();
+            driver.FindElement(By.XPath("(//span[@class='group']/*[@type='checkbox'])["+ groupToRemoveIndex +"]")).Click();
             return this;
         }
 

@@ -9,8 +9,8 @@ namespace addressbook_web_test
         [Test]
         public void GroupRemove()
         {
-            app.Groups.Remove();
-            app.Auth.Logout();
+            const int groupToRemoveIndex = 1;
+            app.Groups.Remove(groupToRemoveIndex);
         }
 
     }

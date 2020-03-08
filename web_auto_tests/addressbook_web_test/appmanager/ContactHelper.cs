@@ -21,17 +21,17 @@ namespace addressbook_web_test
             return this;
         }
 
-        public ContactHelper Modify(ContactFormData newData)
+        public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex)
         {
-            InitContactModification();
+            InitContactModification(contactToModifyIndex);
             FillContactForm(newData);
             SubmitContactModification();
             ReturnToHomePage();
             return this;
         }
-        public ContactHelper Remove()
+        public ContactHelper Remove(int contactToRemoveIndex)
         {
-            SelectContact();
+            SelectContact(contactToRemoveIndex);
             RemoveContact();
             return this;
         }
@@ -98,13 +98,13 @@ namespace addressbook_web_test
         }
         public ContactHelper RemoveContact()
         {
-            driver.FindElement(By.CssSelector("#content > form:nth-child(10) > div:nth-child(8) > input[type=button]")).Click();
+            driver.FindElement(By.CssSelector("[value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
             return this;
         }
-        public ContactHelper SelectContact()
+        public ContactHelper SelectContact(int contactToRemoveIndex)
         {
-            driver.FindElement(By.Name("selected[]")).Click();
+            driver.FindElement(By.XPath("(//td[@class='center']/*[@type='checkbox'])["+ contactToRemoveIndex +"]")).Click();
             return this;
         }
         public ContactHelper SubmitContactModification()
@@ -112,9 +112,9 @@ namespace addressbook_web_test
             driver.FindElement(By.Name("update")).Click();
             return this;
         }
-        public ContactHelper InitContactModification()
+        public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.CssSelector("#maintable > tbody > tr:nth-child(2) > td:nth-child(8) > a > img")).Click();
+            driver.FindElement(By.XPath("(//td[@class='center']//*[@title='Edit'])["+ index +"]")).Click();
             return this;
         }
     }

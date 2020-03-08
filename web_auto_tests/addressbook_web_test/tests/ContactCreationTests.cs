@@ -4,7 +4,7 @@
 namespace addressbook_web_test
 {
     [TestFixture]
-    public class NewContactTest : TestBase
+    public class ContactCreationTests : TestBase
     {
         
         [Test]
@@ -17,7 +17,6 @@ namespace addressbook_web_test
             contact.Company = "best company";
             contact.Address2 = "house";
             app.Contacts.Create(contact);
-            app.Auth.Logout();
         }
     }
 }
