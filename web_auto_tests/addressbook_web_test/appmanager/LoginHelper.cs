@@ -5,15 +5,15 @@ namespace addressbook_web_test
     public class LoginHelper : HelperBase
     {
 
-        public LoginHelper(ApplicationManager manager) 
-            : base (manager)
+        public LoginHelper(ApplicationManager manager)
+            : base(manager)
         {
         }
 
         public void Login(string username, string password)
         {
-            driver.FindElement(By.Name("user")).SendKeys(username);
-            driver.FindElement(By.Name("pass")).SendKeys(password);
+            Type(By.Name("user"), username);
+            Type(By.Name("pass"), password);
             driver.FindElement(By.CssSelector("input:nth-child(7)")).Click();
         }
 

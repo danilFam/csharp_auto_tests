@@ -9,8 +9,7 @@ namespace addressbook_web_test
         [Test]
         public void NewGroup()
         {
-            GroupFormData group = new GroupFormData("new test");
-            group.Footer = "asd";
+            var group = new GroupBuilder().Build();
             app.Groups.Create(group);
         }
     }

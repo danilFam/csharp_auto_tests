@@ -25,6 +25,7 @@ namespace addressbook_web_test
         {
             driver.Quit();
         }
+
         public LoginHelper Auth => loginHelper;
         public NavigationHelper Navigator => navigationHelper;
         public GroupHelper Groups => groupHelper;
