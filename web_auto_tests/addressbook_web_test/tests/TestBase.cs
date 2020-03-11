@@ -9,16 +9,7 @@ namespace addressbook_web_test
         [SetUp]
         public void SetUp()
         {
-            app = new ApplicationManager();
-            app.Navigator.OpenHomePage();
-            app.Auth.Login("admin", "secret");
+            app = ApplicationManager.GetInstance();
         }
-
-        [TearDown]
-        protected void TearDown()
-        {
-            app.Stop();
-        }
-
     }
 }
