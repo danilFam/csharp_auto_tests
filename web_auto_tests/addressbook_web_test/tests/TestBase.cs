@@ -7,7 +7,7 @@ namespace addressbook_web_test
         protected ApplicationManager app;
 
         [SetUp]
-        public void SetUp()
+        public void SetUpApplicationManager()
         {
             app = ApplicationManager.GetInstance();
         }
