@@ -21,16 +21,33 @@ namespace addressbook_web_test
             return this;
         }
 
-        public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex)
+        public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex, ContactFormData contact)
         {
+            if (IsElementPresent(By.CssSelector("td[class=center]")))
+            {
+                return this;
+            }
+            else
+            {
+                Create(contact);
+            }
             InitContactModification(contactToModifyIndex);
             FillContactForm(newData);
             SubmitContactModification();
             ReturnToHomePage();
             return this;
         }
-        public ContactHelper Remove(int contactToRemoveIndex)
+
+        public ContactHelper Remove(int contactToRemoveIndex, ContactFormData contact)
         {
+            if (IsElementPresent(By.CssSelector("td[class=center]")))
+            {
+                return this;
+            }
+            else
+            {
+                Create(contact);
+            }
             SelectContact(contactToRemoveIndex);
             RemoveContact();
             return this;
@@ -78,22 +95,26 @@ namespace addressbook_web_test
             driver.FindElement(By.LinkText("home page")).Click();
             return this;
         }
+
         public ContactHelper RemoveContact()
         {
             driver.FindElement(By.CssSelector("[value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
             return this;
         }
+
         public ContactHelper SelectContact(int contactToRemoveIndex)
         {
             driver.FindElement(By.XPath("(//td[@class='center']/*[@type='checkbox'])[" + contactToRemoveIndex + "]")).Click();
             return this;
         }
+
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
             return this;
         }
+
         public ContactHelper InitContactModification(int index)
         {
             driver.FindElement(By.XPath("(//td[@class='center']//*[@title='Edit'])[" + index + "]")).Click();

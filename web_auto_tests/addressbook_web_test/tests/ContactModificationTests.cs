@@ -10,10 +10,10 @@ namespace addressbook_web_test
         public void ContactModification()
         {
             var newData = new ContactBuilder().Build();
-
+            var contact = new ContactBuilder().Build();
             const int contactToModifyIndex = 1;
 
-            app.Contacts.Modify(newData, contactToModifyIndex);
+            app.Contacts.Modify(newData, contactToModifyIndex, contact);
         }
     }
 }

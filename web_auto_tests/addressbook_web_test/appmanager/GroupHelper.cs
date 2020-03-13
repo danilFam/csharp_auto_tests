@@ -18,9 +18,17 @@ namespace addressbook_web_test
             ReturnToGroupsPage();
             return this;
         }
-        public GroupHelper Modify(GroupFormData newData, int groupToModifyIndex)
+        public GroupHelper Modify(int groupToModifyIndex, GroupFormData newData, GroupFormData group)
         {
             manager.Navigator.GoToGroupsPage();
+            if (IsElementPresent(By.ClassName("group")))
+            {
+                return this;
+            }
+            else
+            {
+                Create(group);
+            }
             SelectGroup(groupToModifyIndex);
             InitGroupModification();
             FillGroupForm(newData);
@@ -29,9 +37,17 @@ namespace addressbook_web_test
             return this;
         }
 
-        public GroupHelper Remove(int groupToRemoveIndex)
+        public GroupHelper Remove(int groupToRemoveIndex, GroupFormData group)
         {
             manager.Navigator.GoToGroupsPage();
+            if (IsElementPresent(By.ClassName("group")))
+            {
+                return this;
+            }
+            else
+            {
+                Create(group);
+            }
             SelectGroup(groupToRemoveIndex);
             RemoveGroup();
             ReturnToGroupsPage();

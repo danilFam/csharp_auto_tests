@@ -9,7 +9,9 @@ namespace addressbook_web_test
         public void ContactRemove()
         {
             const int contactToRemoveIndex = 1;
-            app.Contacts.Remove(contactToRemoveIndex);
+            var contact = new ContactBuilder().Build();
+
+            app.Contacts.Remove(contactToRemoveIndex, contact);
         }
     }
 }
