@@ -3,6 +3,7 @@
 namespace addressbook_web_test
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class LoginTests : TestBase
     {
         [Test]

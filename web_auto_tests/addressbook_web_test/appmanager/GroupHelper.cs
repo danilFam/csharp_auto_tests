@@ -21,14 +21,9 @@ namespace addressbook_web_test
         public GroupHelper Modify(int groupToModifyIndex, GroupFormData newData, GroupFormData group)
         {
             manager.Navigator.GoToGroupsPage();
-            if (IsElementPresent(By.ClassName("group")))
-            {
-                return this;
-            }
-            else
-            {
-                Create(group);
-            }
+
+            CreateGroupIfNotExist(group);
+
             SelectGroup(groupToModifyIndex);
             InitGroupModification();
             FillGroupForm(newData);
@@ -40,18 +35,23 @@ namespace addressbook_web_test
         public GroupHelper Remove(int groupToRemoveIndex, GroupFormData group)
         {
             manager.Navigator.GoToGroupsPage();
-            if (IsElementPresent(By.ClassName("group")))
-            {
-                return this;
-            }
-            else
-            {
-                Create(group);
-            }
+
+            CreateGroupIfNotExist(group);
+
             SelectGroup(groupToRemoveIndex);
             RemoveGroup();
             ReturnToGroupsPage();
             return this;
+        }
+
+        private void CreateGroupIfNotExist(GroupFormData group)
+        {
+            bool groupIsNotExist = !IsElementPresent(By.ClassName("group"));
+
+            if (groupIsNotExist)
+            {
+                Create(group);
+            }
         }
 
         public GroupHelper SelectGroup(int groupToRemoveIndex)

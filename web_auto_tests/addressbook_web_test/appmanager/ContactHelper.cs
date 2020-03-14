@@ -23,34 +23,34 @@ namespace addressbook_web_test
 
         public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex, ContactFormData contact)
         {
-            if (IsElementPresent(By.CssSelector("td[class=center]")))
-            {
-                return this;
-            }
-            else
-            {
-                Create(contact);
-            }
+            CreateContactIfNotExists(contact);
+
             InitContactModification(contactToModifyIndex);
             FillContactForm(newData);
             SubmitContactModification();
             ReturnToHomePage();
+
             return this;
         }
 
         public ContactHelper Remove(int contactToRemoveIndex, ContactFormData contact)
         {
-            if (IsElementPresent(By.CssSelector("td[class=center]")))
-            {
-                return this;
-            }
-            else
+            CreateContactIfNotExists(contact);
+
+            SelectContact(contactToRemoveIndex);
+            RemoveContact();
+
+            return this;
+        }
+
+        private void CreateContactIfNotExists(ContactFormData contact)
+        {
+            bool contactIsNotExist = !IsElementPresent(By.CssSelector("td[class=center]"));
+
+            if (contactIsNotExist)
             {
                 Create(contact);
             }
-            SelectContact(contactToRemoveIndex);
-            RemoveContact();
-            return this;
         }
 
         public ContactHelper InitAddNewContact()

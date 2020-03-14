@@ -1,8 +1,10 @@
 ﻿using NUnit.Framework;
 
+
 namespace addressbook_web_test
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class ContactModificationTests : AuthTestBase
     {
         [Test]
