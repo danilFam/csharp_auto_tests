@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
 
 namespace addressbook_web_test
 {
@@ -18,6 +20,19 @@ namespace addressbook_web_test
             ReturnToGroupsPage();
             return this;
         }
+
+        public List<GroupFormData> GetGroupList()
+        {
+            List<GroupFormData> groups = new List<GroupFormData>();
+            manager.Navigator.GoToGroupsPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupFormData());
+            }
+            return groups;
+        }
+
         public GroupHelper Modify(int groupToModifyIndex, GroupFormData newData, GroupFormData group)
         {
             manager.Navigator.GoToGroupsPage();
