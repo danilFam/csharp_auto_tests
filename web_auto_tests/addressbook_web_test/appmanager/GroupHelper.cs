@@ -28,7 +28,7 @@ namespace addressbook_web_test
             ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
             foreach (IWebElement element in elements)
             {
-                groups.Add(new GroupFormData());
+                groups.Add(new GroupFormData { Name = element.Text });
             }
             return groups;
         }
