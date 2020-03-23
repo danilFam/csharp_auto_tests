@@ -1,6 +1,8 @@
-﻿namespace addressbook_web_test
+﻿using System;
+
+namespace addressbook_web_test
 {
-    public class ContactFormData
+    public class ContactFormData : IEquatable<ContactFormData>, IComparable<ContactFormData>
     {
         public string Firstname { get; set; }
         public string Middlename { get; set; } = "";
@@ -20,5 +22,32 @@
         public string Address2 { get; set; }
         public string Phone2 { get; set; } = "";
         public string Notes { get; set; } = "";
+
+        public int CompareTo(ContactFormData other)
+        {
+            if (other is null)
+            {
+                return 1;
+            }
+            return Lastname.CompareTo(other.Lastname);
+        }
+
+        public bool Equals(ContactFormData other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Lastname == other.Lastname && Firstname == other.Firstname;
+        }
+
+        public override int GetHashCode()
+        {
+            return Lastname.GetHashCode();
+        }
     }
 }

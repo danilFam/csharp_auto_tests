@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using NUnit.Framework;
 using System.IO;
+using System.Collections.Generic;
 
 namespace addressbook_web_test
 {
@@ -21,6 +22,19 @@ namespace addressbook_web_test
             return this;
         }
 
+        internal List<ContactFormData> GetContactList()
+        {
+            List<ContactFormData> contacts = new List<ContactFormData>();
+            ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
+            foreach (IWebElement contactElement in contactElements)
+            {
+                var lastNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)"));
+                var firstNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)"));
+                contacts.Add(new ContactFormData { Lastname = lastNameElement.Text, Firstname = firstNameElement.Text });
+            }
+            return contacts;
+        }
+
         public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex, ContactFormData contact)
         {
             CreateContactIfNotExists(contact);
@@ -39,6 +53,7 @@ namespace addressbook_web_test
 
             SelectContact(contactToRemoveIndex);
             RemoveContact();
+            manager.Navigator.OpenHomePage();
 
             return this;
         }

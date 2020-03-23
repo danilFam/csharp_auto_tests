@@ -1,7 +1,4 @@
-﻿
-
-using Bogus;
-using System;
+﻿using Bogus;
 
 namespace addressbook_web_test
 {
