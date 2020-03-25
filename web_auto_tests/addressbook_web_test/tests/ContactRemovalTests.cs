@@ -12,11 +12,12 @@ namespace addressbook_web_test
         {
 
             const int contactToRemoveIndex = 1;
-            var contact = new ContactBuilder().Build();
+            var newContact = new ContactBuilder().Build();
 
             List<ContactFormData> oldContacts = app.Contacts.GetContactList();
+            ContactFormData toBeRemoved = oldContacts[0];
 
-            app.Contacts.Remove(contactToRemoveIndex, contact);
+            app.Contacts.Remove(contactToRemoveIndex, newContact);
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
 
@@ -26,6 +27,11 @@ namespace addressbook_web_test
             newContacts.Sort();
 
             Assert.AreEqual(oldContacts, newContacts);
+
+            foreach (ContactFormData contact in newContacts)
+            {
+                Assert.AreNotEqual(contact.Id, toBeRemoved.Id);
+            }
         }
     }
 }

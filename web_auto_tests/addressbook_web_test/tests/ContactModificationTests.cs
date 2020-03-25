@@ -16,6 +16,7 @@ namespace addressbook_web_test
             const int contactToModifyIndex = 1;
 
             List<ContactFormData> oldContacts = app.Contacts.GetContactList();
+            ContactFormData oldData = oldContacts[0];
 
             app.Contacts.Modify(newData, contactToModifyIndex, newContact);
 
@@ -29,6 +30,15 @@ namespace addressbook_web_test
             newContacts.Sort();
 
             Assert.AreEqual(oldContacts, newContacts);
+
+            foreach (ContactFormData contact in newContacts)
+            {
+                if (contact.Id == oldData.Id)
+                {
+                    Assert.AreEqual(newData.Lastname, contact.Lastname);
+                    Assert.AreEqual(newData.Firstname, contact.Firstname);
+                }
+            }
         }
     }
 }

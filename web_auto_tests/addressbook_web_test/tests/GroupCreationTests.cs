@@ -13,14 +13,14 @@ namespace addressbook_web_test
         {
             List<GroupFormData> oldGroups = app.Groups.GetGroupList();
 
-            var group = new GroupBuilder().Build();
+            var newGroup = new GroupBuilder().Build();
 
-            app.Groups.Create(group);
+            app.Groups.Create(newGroup);
 
             Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
 
             List<GroupFormData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(group);
+            oldGroups.Add(newGroup);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);

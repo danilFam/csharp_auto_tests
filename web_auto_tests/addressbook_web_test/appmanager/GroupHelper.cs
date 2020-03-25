@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 using System.Collections.Generic;
 
 namespace addressbook_web_test
@@ -40,7 +39,7 @@ namespace addressbook_web_test
                     groupCache.Add(new GroupFormData
                     {
                         Name = element.Text,
-                        Id = driver.FindElement(By.TagName("input")).GetAttribute("value")
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
                     });
                 }
             }

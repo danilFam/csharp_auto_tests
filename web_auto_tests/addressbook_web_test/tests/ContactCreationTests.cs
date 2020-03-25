@@ -14,14 +14,14 @@ namespace addressbook_web_test
 
             List<ContactFormData> oldContacts = app.Contacts.GetContactList();
 
-            var contact = new ContactBuilder().Build();
+            var newContact = new ContactBuilder().Build();
 
-            app.Contacts.Create(contact);
+            app.Contacts.Create(newContact);
 
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
 
             List<ContactFormData> newContacts = app.Contacts.GetContactList();
-            oldContacts.Add(contact);
+            oldContacts.Add(newContact);
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);

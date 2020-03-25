@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System.IO;
 using System.Collections.Generic;
-using System;
 
 namespace addressbook_web_test
 {
@@ -38,9 +37,12 @@ namespace addressbook_web_test
                 ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
                 foreach (IWebElement contactElement in contactElements)
                 {
-                    var lastNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)"));
-                    var firstNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)"));
-                    contactCache.Add(new ContactFormData { Lastname = lastNameElement.Text, Firstname = firstNameElement.Text });
+                    contactCache.Add(new ContactFormData
+                    {
+                        Lastname = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)")).Text,
+                        Firstname = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)")).Text,
+                        Id = contactElement.FindElement(By.TagName("input")).GetAttribute("id")
+                    });
                 }
             }
             return new List<ContactFormData>(contactCache);

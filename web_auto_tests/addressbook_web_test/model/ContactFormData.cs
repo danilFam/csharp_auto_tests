@@ -22,6 +22,7 @@ namespace addressbook_web_test
         public string Address2 { get; set; }
         public string Phone2 { get; set; } = "";
         public string Notes { get; set; } = "";
+        public string Id { get; set; }
 
         public int CompareTo(ContactFormData other)
         {

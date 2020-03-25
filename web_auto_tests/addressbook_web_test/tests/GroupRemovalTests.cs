@@ -29,7 +29,7 @@ namespace addressbook_web_test
 
             foreach(GroupFormData group in newGroups)
             {
-                Assert.AreNotEqual(group.Id, toBeRemoved);
+                Assert.AreNotEqual(group.Id, toBeRemoved.Id);
             }
         }
     }
