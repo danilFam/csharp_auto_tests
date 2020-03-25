@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace addressbook_web_test
 {
@@ -22,17 +23,27 @@ namespace addressbook_web_test
             return this;
         }
 
-        internal List<ContactFormData> GetContactList()
+        public double GetContactCount()
         {
-            List<ContactFormData> contacts = new List<ContactFormData>();
-            ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
-            foreach (IWebElement contactElement in contactElements)
+            return driver.FindElements(By.CssSelector("tr[name=entry]")).Count;
+        }
+
+        private List<ContactFormData> contactCache = null;
+
+        public List<ContactFormData> GetContactList()
+        {
+            if (contactCache == null)
             {
-                var lastNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)"));
-                var firstNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)"));
-                contacts.Add(new ContactFormData { Lastname = lastNameElement.Text, Firstname = firstNameElement.Text });
+                contactCache = new List<ContactFormData>();
+                ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
+                foreach (IWebElement contactElement in contactElements)
+                {
+                    var lastNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)"));
+                    var firstNameElement = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)"));
+                    contactCache.Add(new ContactFormData { Lastname = lastNameElement.Text, Firstname = firstNameElement.Text });
+                }
             }
-            return contacts;
+            return new List<ContactFormData>(contactCache);
         }
 
         public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex, ContactFormData contact)
@@ -102,6 +113,7 @@ namespace addressbook_web_test
         public ContactHelper SubmitContactForm()
         {
             driver.FindElement(By.CssSelector("input[name=submit]")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -115,6 +127,7 @@ namespace addressbook_web_test
         {
             driver.FindElement(By.CssSelector("[value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
+            contactCache = null;
             return this;
         }
 
@@ -127,6 +140,7 @@ namespace addressbook_web_test
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             return this;
         }
 

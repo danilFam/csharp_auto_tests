@@ -12,12 +12,15 @@ namespace addressbook_web_test
         public void GroupModication()
         {
             var newData = new GroupBuilder().Build();
-            var group = new GroupBuilder().Build();
+            var newGroup = new GroupBuilder().Build();
             const int groupToModifyIndex = 1;
 
             List<GroupFormData> oldGroups = app.Groups.GetGroupList();
+            GroupFormData oldData = oldGroups[0];
 
-            app.Groups.Modify(groupToModifyIndex, newData, group);
+            app.Groups.Modify(groupToModifyIndex, newData, newGroup);
+
+            Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
             List<GroupFormData> newGroups = app.Groups.GetGroupList();
             oldGroups[0].Name = newData.Name;
@@ -25,6 +28,13 @@ namespace addressbook_web_test
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
 
+            foreach (GroupFormData group in newGroups)
+            {
+                if (group.Id == oldData.Id)
+                {
+                    Assert.AreEqual(newData.Name, group.Name);
+                }
+            }
         }
     }
 }

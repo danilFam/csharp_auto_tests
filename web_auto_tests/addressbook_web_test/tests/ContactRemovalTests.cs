@@ -18,6 +18,8 @@ namespace addressbook_web_test
 
             app.Contacts.Remove(contactToRemoveIndex, contact);
 
+            Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
+
             List<ContactFormData> newContacts = app.Contacts.GetContactList();
             oldContacts.RemoveAt(0);
             oldContacts.Sort();
