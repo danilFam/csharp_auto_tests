@@ -31,26 +31,31 @@ namespace addressbook_web_test
         {
             if (groupCache == null)
             {
-                groupCache = new List<GroupFormData>();
-                manager.Navigator.GoToGroupsPage();
-                ICollection<IWebElement> groupElements = driver.FindElements(By.CssSelector("span.group"));
-                foreach (IWebElement element in groupElements)
-                {
-                    groupCache.Add(new GroupFormData
-                    {
-                        Name = element.Text,
-                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
-                    });
-                }
+                FillGroupsList();
             }
             return new List<GroupFormData>(groupCache);
         }
 
-        public GroupHelper Modify(int groupToModifyIndex, GroupFormData newData, GroupFormData group)
+        private void FillGroupsList()
+        {
+            groupCache = new List<GroupFormData>();
+            manager.Navigator.GoToGroupsPage();
+            ICollection<IWebElement> groupElements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in groupElements)
+            {
+                groupCache.Add(new GroupFormData
+                {
+                    Name = element.Text,
+                    Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                });
+            }
+        }
+
+        public GroupHelper Modify(int groupToModifyIndex, GroupFormData newData)
         {
             manager.Navigator.GoToGroupsPage();
 
-            CreateGroupIfNotExist(group);
+            CreateGroupIfNotExist();
 
             SelectGroup(groupToModifyIndex);
             InitGroupModification();
@@ -60,11 +65,11 @@ namespace addressbook_web_test
             return this;
         }
 
-        public GroupHelper Remove(int groupToRemoveIndex, GroupFormData group)
+        public GroupHelper Remove(int groupToRemoveIndex)
         {
             manager.Navigator.GoToGroupsPage();
 
-            CreateGroupIfNotExist(group);
+            CreateGroupIfNotExist();
 
             SelectGroup(groupToRemoveIndex);
             RemoveGroup();
@@ -72,13 +77,14 @@ namespace addressbook_web_test
             return this;
         }
 
-        private void CreateGroupIfNotExist(GroupFormData group)
+        private void CreateGroupIfNotExist()
         {
+            GroupFormData newGroup = new GroupBuilder().Build();
             bool groupIsNotExist = !IsElementPresent(By.ClassName("group"));
 
             if (groupIsNotExist)
             {
-                Create(group);
+                Create(newGroup);
             }
         }
 

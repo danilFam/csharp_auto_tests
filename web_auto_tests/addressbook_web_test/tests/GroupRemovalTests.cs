@@ -10,12 +10,11 @@ namespace addressbook_web_test
         [Test]
         public void GroupRemove()
         {
-            var newGroup = new GroupBuilder().Build();
             const int groupToRemoveIndex = 1;
 
             List<GroupFormData> oldGroups = app.Groups.GetGroupList();
 
-            app.Groups.Remove(groupToRemoveIndex, newGroup);
+            app.Groups.Remove(groupToRemoveIndex);
 
             Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
 

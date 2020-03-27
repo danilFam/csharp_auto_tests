@@ -10,14 +10,12 @@ namespace addressbook_web_test
         [Test]
         public void ContactRemove()
         {
-
             const int contactToRemoveIndex = 1;
-            var newContact = new ContactBuilder().Build();
 
             List<ContactFormData> oldContacts = app.Contacts.GetContactList();
             ContactFormData toBeRemoved = oldContacts[0];
 
-            app.Contacts.Remove(contactToRemoveIndex, newContact);
+            app.Contacts.Remove(contactToRemoveIndex);
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
 

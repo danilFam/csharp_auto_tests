@@ -12,13 +12,12 @@ namespace addressbook_web_test
         public void ContactModification()
         {
             var newData = new ContactBuilder().Build();
-            var newContact = new ContactBuilder().Build();
             const int contactToModifyIndex = 1;
 
             List<ContactFormData> oldContacts = app.Contacts.GetContactList();
             ContactFormData oldData = oldContacts[0];
 
-            app.Contacts.Modify(newData, contactToModifyIndex, newContact);
+            app.Contacts.Modify(newData, contactToModifyIndex);
 
             Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
 

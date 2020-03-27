@@ -12,13 +12,12 @@ namespace addressbook_web_test
         public void GroupModication()
         {
             var newData = new GroupBuilder().Build();
-            var newGroup = new GroupBuilder().Build();
             const int groupToModifyIndex = 1;
 
             List<GroupFormData> oldGroups = app.Groups.GetGroupList();
             GroupFormData oldData = oldGroups[0];
 
-            app.Groups.Modify(groupToModifyIndex, newData, newGroup);
+            app.Groups.Modify(groupToModifyIndex, newData);
 
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 

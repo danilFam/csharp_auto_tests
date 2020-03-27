@@ -33,24 +33,29 @@ namespace addressbook_web_test
         {
             if (contactCache == null)
             {
-                contactCache = new List<ContactFormData>();
-                ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
-                foreach (IWebElement contactElement in contactElements)
-                {
-                    contactCache.Add(new ContactFormData
-                    {
-                        Lastname = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)")).Text,
-                        Firstname = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)")).Text,
-                        Id = contactElement.FindElement(By.TagName("input")).GetAttribute("id")
-                    });
-                }
+                FillContactsList();
             }
             return new List<ContactFormData>(contactCache);
         }
 
-        public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex, ContactFormData contact)
+        private void FillContactsList()
         {
-            CreateContactIfNotExists(contact);
+            contactCache = new List<ContactFormData>();
+            ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
+            foreach (IWebElement contactElement in contactElements)
+            {
+                contactCache.Add(new ContactFormData
+                {
+                    Lastname = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)")).Text,
+                    Firstname = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)")).Text,
+                    Id = contactElement.FindElement(By.TagName("input")).GetAttribute("id")
+                });
+            }
+        }
+
+        public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex)
+        {
+            CreateContactIfNotExists();
 
             InitContactModification(contactToModifyIndex);
             FillContactForm(newData);
@@ -60,9 +65,9 @@ namespace addressbook_web_test
             return this;
         }
 
-        public ContactHelper Remove(int contactToRemoveIndex, ContactFormData contact)
+        public ContactHelper Remove(int contactToRemoveIndex)
         {
-            CreateContactIfNotExists(contact);
+            CreateContactIfNotExists();
 
             SelectContact(contactToRemoveIndex);
             RemoveContact();
@@ -71,13 +76,14 @@ namespace addressbook_web_test
             return this;
         }
 
-        private void CreateContactIfNotExists(ContactFormData contact)
+        private void CreateContactIfNotExists()
         {
+            var newContact = new ContactBuilder().Build();
             bool contactIsNotExist = !IsElementPresent(By.CssSelector("td[class=center]"));
 
             if (contactIsNotExist)
             {
-                Create(contact);
+                Create(newContact);
             }
         }
 
