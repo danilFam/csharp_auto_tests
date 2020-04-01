@@ -33,24 +33,31 @@ namespace addressbook_web_test
         {
             if (contactCache == null)
             {
-                FillContactsList();
+                contactCache = ReadContacts();
             }
             return new List<ContactFormData>(contactCache);
         }
 
-        private void FillContactsList()
+        private List<ContactFormData> ReadContacts()
         {
-            contactCache = new List<ContactFormData>();
+            var contactsList = new List<ContactFormData>();
             ICollection<IWebElement> contactElements = driver.FindElements(By.CssSelector("tr[name=entry]"));
             foreach (IWebElement contactElement in contactElements)
             {
-                contactCache.Add(new ContactFormData
-                {
-                    Lastname = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)")).Text,
-                    Firstname = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)")).Text,
-                    Id = contactElement.FindElement(By.TagName("input")).GetAttribute("id")
-                });
+                var contact = ReadContact(contactElement);
+                contactsList.Add(contact);
             }
+            return contactsList;
+        }
+
+        private ContactFormData ReadContact(IWebElement contactElement)
+        {
+            return (new ContactFormData
+            {
+                Lastname = contactElement.FindElement(By.CssSelector("td:nth-of-type(2)")).Text,
+                Firstname = contactElement.FindElement(By.CssSelector("td:nth-of-type(3)")).Text,
+                Id = contactElement.FindElement(By.TagName("input")).GetAttribute("id")
+            });
         }
 
         public ContactHelper Modify(ContactFormData newData, int contactToModifyIndex)

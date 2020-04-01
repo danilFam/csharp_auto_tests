@@ -31,24 +31,31 @@ namespace addressbook_web_test
         {
             if (groupCache == null)
             {
-                FillGroupsList();
+                groupCache = ReadGroups();
             }
             return new List<GroupFormData>(groupCache);
         }
 
-        private void FillGroupsList()
+        private List<GroupFormData> ReadGroups()
         {
-            groupCache = new List<GroupFormData>();
+            var groupsList = new List<GroupFormData>();
             manager.Navigator.GoToGroupsPage();
             ICollection<IWebElement> groupElements = driver.FindElements(By.CssSelector("span.group"));
-            foreach (IWebElement element in groupElements)
+            foreach (IWebElement groupElement in groupElements)
             {
-                groupCache.Add(new GroupFormData
-                {
-                    Name = element.Text,
-                    Id = element.FindElement(By.TagName("input")).GetAttribute("value")
-                });
+                var group = ReadGroup(groupElement);
+                groupsList.Add(group);
             }
+            return groupsList;
+        }
+
+        private GroupFormData ReadGroup(IWebElement groupElement)
+        {
+            return (new GroupFormData
+            {
+                Name = groupElement.Text,
+                Id = groupElement.FindElement(By.TagName("input")).GetAttribute("value")
+            });
         }
 
         public GroupHelper Modify(int groupToModifyIndex, GroupFormData newData)
