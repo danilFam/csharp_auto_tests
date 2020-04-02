@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System.IO;
 using System.Collections.Generic;
-using System;
 
 namespace addressbook_web_test
 {
@@ -170,8 +169,8 @@ namespace addressbook_web_test
 
         public ContactHelper FillContactForm(ContactFormData contact)
         {
-            //var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
-            //driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(path);
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
+            driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(path);
             Type(By.Name("firstname"), contact.Firstname);
             Type(By.Name("middlename"), contact.Middlename);
             Type(By.Name("lastname"), contact.Lastname);
