@@ -4,6 +4,9 @@ namespace addressbook_web_test
 {
     public class ContactFormData : IEquatable<ContactFormData>, IComparable<ContactFormData>
     {
+        private string allPhones;
+        private string allEmails;
+
         public string Firstname { get; set; }
         public string Middlename { get; set; } = "";
         public string Lastname { get; set; }
@@ -11,9 +14,9 @@ namespace addressbook_web_test
         public string Title { get; set; } = "";
         public string Company { get; set; }
         public string Address { get; set; }
-        public string Home { get; set; } = "";
-        public string Mobile { get; set; }
-        public string Work { get; set; } = "";
+        public string HomePhone { get; set; } = "";
+        public string MobilePhone { get; set; }
+        public string WorkPhone { get; set; } = "";
         public string Fax { get; set; } = "";
         public string Email { get; set; }
         public string Email2 { get; set; } = "";
@@ -23,6 +26,43 @@ namespace addressbook_web_test
         public string Phone2 { get; set; } = "";
         public string Notes { get; set; } = "";
         public string Id { get; set; }
+        public string AllPhones
+        {
+            get
+            {
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (CleanUp(HomePhone) + CleanUp(MobilePhone) + CleanUp(WorkPhone)).Trim();
+                }
+            }
+            set
+            {
+                allPhones = value;
+            }
+        }
+
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+                else
+                {
+                    return Email + "\r\n" + Email2 + "\r\n" + Email3;
+                }
+            }
+            set
+            {
+                allEmails = value;
+            }
+        }
 
         public int CompareTo(ContactFormData other)
         {
@@ -49,6 +89,15 @@ namespace addressbook_web_test
         public override int GetHashCode()
         {
             return Lastname.GetHashCode();
+        }
+        private string CleanUp(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            return phone.Replace(" ", "").Replace("-", "")
+                .Replace("(", "").Replace(")", "").Replace(".", "") + "\r\n";
         }
     }
 }
