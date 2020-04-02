@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace addressbook_web_test
 {
@@ -35,6 +36,10 @@ namespace addressbook_web_test
             string email = driver.FindElement(By.Name("email")).GetAttribute("value");
             string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+            string nickname = driver.FindElement(By.Name("nickname")).GetAttribute("value");
+            string company = driver.FindElement(By.Name("company")).GetAttribute("value");
+            string homePage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
+            string address2 = driver.FindElement(By.Name("address2")).GetAttribute("value");
             return new ContactFormData()
             {
                 Firstname = firstName,
@@ -45,7 +50,22 @@ namespace addressbook_web_test
                 WorkPhone = workPhone,
                 Email = email,
                 Email2 = email2,
-                Email3 = email3
+                Email3 = email3,
+                Nickname = nickname,
+                Company = company,
+                Homepage = homePage,
+                Address2 = address2
+            };
+        }
+
+        public ContactFormData GetContactInformationFromDetails(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            ShowContactDetails(index);
+            string allInformation = driver.FindElement(By.CssSelector("div#content")).Text;
+            return new ContactFormData()
+            {
+                AllInformation = allInformation
             };
         }
 
@@ -150,8 +170,8 @@ namespace addressbook_web_test
 
         public ContactHelper FillContactForm(ContactFormData contact)
         {
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
-            driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(path);
+            //var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"images\", "newimage.png");
+            //driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(path);
             Type(By.Name("firstname"), contact.Firstname);
             Type(By.Name("middlename"), contact.Middlename);
             Type(By.Name("lastname"), contact.Lastname);
@@ -211,6 +231,10 @@ namespace addressbook_web_test
         {
             driver.FindElement(By.XPath("(//td[@class='center']//*[@title='Edit'])[" + index + "]")).Click();
             return this;
+        }
+        private void ShowContactDetails(int index)
+        {
+            driver.FindElement(By.XPath("(//td[@class='center']//*[@title='Details'])[" + index + "]")).Click();
         }
     }
 }

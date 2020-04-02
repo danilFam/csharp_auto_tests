@@ -6,6 +6,7 @@ namespace addressbook_web_test
     {
         private string allPhones;
         private string allEmails;
+        private string allInformation;
 
         public string Firstname { get; set; }
         public string Middlename { get; set; } = "";
@@ -55,12 +56,31 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return Email + "\r\n" + Email2 + "\r\n" + Email3;
+                    return (Email + "\r\n" + Email2 + "\r\n" + Email3).Trim();
                 }
             }
             set
             {
                 allEmails = value;
+            }
+        }
+
+        public string AllInformation
+        {
+            get
+            {
+                if (allInformation != null)
+                {
+                    return allInformation;
+                }
+                else
+                {
+                    return Firstname + " " + Lastname + "\r\n" + Company + "\r\n" + Address + "\r\n\r\nM: " + MobilePhone + "\r\n\r\n" + Email + "\r\nHomepage:\r\n" + Homepage + "\r\n\r\n\r\n" + Address2;
+                }
+            }
+            set
+            {
+                allInformation = value;
             }
         }
 
