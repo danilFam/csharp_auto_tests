@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace addressbook_web_test
 {
@@ -37,7 +38,8 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return (CleanUp(HomePhone) + CleanUp(MobilePhone) + CleanUp(WorkPhone)).Trim();
+                    return (CleanUp(HomePhone) + CleanUp(MobilePhone)
+                        + CleanUp(WorkPhone) + CleanUp(Phone2)).Trim();
                 }
             }
             set
@@ -56,7 +58,7 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return (Email + "\r\n" + Email2 + "\r\n" + Email3).Trim();
+                    return (LineBreak(Email) + LineBreak(Email2) + LineBreak(Email3)).Trim();
                 }
             }
             set
@@ -75,7 +77,16 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return Firstname + " " + Lastname + "\r\n" + Company + "\r\n" + Address + "\r\n\r\nM: " + MobilePhone + "\r\n\r\n" + Email + "\r\nHomepage:\r\n" + Homepage + "\r\n\r\n\r\n" + Address2;
+                    return ($"{Delete(Firstname)}{Delete(Middlename)}{Delete(Lastname)}{Delete(Nickname)}" +
+                        $"{Delete(Title)}{Delete(Company)}{Delete(Address)}" +
+                        $"{Delete(HomePhone == string.Empty ? HomePhone : "H:" + HomePhone)}" +
+                        $"{Delete(MobilePhone == string.Empty ? MobilePhone : "M:" + MobilePhone)}" +
+                        $"{Delete(WorkPhone == string.Empty ? WorkPhone : "W:" + WorkPhone)}" +
+                        $"{Delete(Fax == string.Empty ? Fax : "F:" + Fax)}" +
+                        $"{Delete(Email)}{Delete(Email2)}{Delete(Email3)}" +
+                        $"{Delete(Homepage == string.Empty ? Homepage : "Homepage:" + Homepage)}" +
+                        $"{Delete(Address2)}{Delete(Phone2 == string.Empty ? Phone2 : "P:" + Phone2)}" +
+                        $"{Delete(Notes)}").Trim();
                 }
             }
             set
@@ -116,8 +127,24 @@ namespace addressbook_web_test
             {
                 return "";
             }
-            return phone.Replace(" ", "").Replace("-", "")
-                .Replace("(", "").Replace(")", "").Replace(".", "") + "\r\n";
+            return Regex.Replace(phone, "[(). -]", "") + "\r\n";
+        }
+
+        private string LineBreak(string data)
+        {
+            if (data == null || data == "")
+            {
+                return "";
+            }
+            return data + "\r\n";
+        }
+        private string Delete(string data)
+        {
+            if (data == null || data == "")
+            {
+                return "";
+            }
+            return Regex.Replace(data, @"[\n\t\r\s]", "");
         }
     }
 }

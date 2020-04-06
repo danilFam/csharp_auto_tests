@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace addressbook_web_test
 {
@@ -27,7 +28,11 @@ namespace addressbook_web_test
             manager.Navigator.OpenHomePage();
             InitContactModification(index);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string middleName = driver.FindElement(By.Name("middlename")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string nickname = driver.FindElement(By.Name("nickname")).GetAttribute("value");
+            string company = driver.FindElement(By.Name("company")).GetAttribute("value");
+            string tittle = driver.FindElement(By.Name("title")).GetAttribute("value");
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
             string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
             string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
@@ -35,13 +40,15 @@ namespace addressbook_web_test
             string email = driver.FindElement(By.Name("email")).GetAttribute("value");
             string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
-            string nickname = driver.FindElement(By.Name("nickname")).GetAttribute("value");
-            string company = driver.FindElement(By.Name("company")).GetAttribute("value");
             string homePage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
             string address2 = driver.FindElement(By.Name("address2")).GetAttribute("value");
+            string fax = driver.FindElement(By.Name("fax")).GetAttribute("value");
+            string phone2 = driver.FindElement(By.Name("phone2")).GetAttribute("value");
+            string notes = driver.FindElement(By.Name("notes")).GetAttribute("value");
             return new ContactFormData()
             {
                 Firstname = firstName,
+                Middlename = middleName,
                 Lastname = lastName,
                 Address = address,
                 HomePhone = homePhone,
@@ -53,7 +60,11 @@ namespace addressbook_web_test
                 Nickname = nickname,
                 Company = company,
                 Homepage = homePage,
-                Address2 = address2
+                Address2 = address2,
+                Fax = fax,
+                Phone2 = phone2,
+                Title = tittle,
+                Notes = notes
             };
         }
 
@@ -64,7 +75,7 @@ namespace addressbook_web_test
             string allInformation = driver.FindElement(By.CssSelector("div#content")).Text;
             return new ContactFormData()
             {
-                AllInformation = allInformation
+                AllInformation = Regex.Replace(allInformation, @"[\n\t\r\s]", "")
             };
         }
 
