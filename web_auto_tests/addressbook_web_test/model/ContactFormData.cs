@@ -38,8 +38,8 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return (CleanUp(HomePhone) + CleanUp(MobilePhone)
-                        + CleanUp(WorkPhone) + CleanUp(Phone2)).Trim();
+                    return (ReplaceNotVisibleInFormSymbols(HomePhone) + ReplaceNotVisibleInFormSymbols(MobilePhone)
+                        + ReplaceNotVisibleInFormSymbols(WorkPhone) + ReplaceNotVisibleInFormSymbols(Phone2)).Trim();
                 }
             }
             set
@@ -58,7 +58,7 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return (LineBreak(Email) + LineBreak(Email2) + LineBreak(Email3)).Trim();
+                    return (AddLineBreakSymbol(Email) + AddLineBreakSymbol(Email2) + AddLineBreakSymbol(Email3)).Trim();
                 }
             }
             set
@@ -77,16 +77,16 @@ namespace addressbook_web_test
                 }
                 else
                 {
-                    return ($"{Delete(Firstname)}{Delete(Middlename)}{Delete(Lastname)}{Delete(Nickname)}" +
-                        $"{Delete(Title)}{Delete(Company)}{Delete(Address)}" +
-                        $"{Delete(HomePhone == string.Empty ? HomePhone : "H:" + HomePhone)}" +
-                        $"{Delete(MobilePhone == string.Empty ? MobilePhone : "M:" + MobilePhone)}" +
-                        $"{Delete(WorkPhone == string.Empty ? WorkPhone : "W:" + WorkPhone)}" +
-                        $"{Delete(Fax == string.Empty ? Fax : "F:" + Fax)}" +
-                        $"{Delete(Email)}{Delete(Email2)}{Delete(Email3)}" +
-                        $"{Delete(Homepage == string.Empty ? Homepage : "Homepage:" + Homepage)}" +
-                        $"{Delete(Address2)}{Delete(Phone2 == string.Empty ? Phone2 : "P:" + Phone2)}" +
-                        $"{Delete(Notes)}").Trim();
+                    return ($"{ReplaceSpecialSymbolsWithEmptyString(Firstname)}{ReplaceSpecialSymbolsWithEmptyString(Middlename)}{ReplaceSpecialSymbolsWithEmptyString(Lastname)}{ReplaceSpecialSymbolsWithEmptyString(Nickname)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(Title)}{ReplaceSpecialSymbolsWithEmptyString(Company)}{ReplaceSpecialSymbolsWithEmptyString(Address)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(HomePhone == string.Empty ? HomePhone : "H:" + HomePhone)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(MobilePhone == string.Empty ? MobilePhone : "M:" + MobilePhone)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(WorkPhone == string.Empty ? WorkPhone : "W:" + WorkPhone)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(Fax == string.Empty ? Fax : "F:" + Fax)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(Email)}{ReplaceSpecialSymbolsWithEmptyString(Email2)}{ReplaceSpecialSymbolsWithEmptyString(Email3)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(Homepage == string.Empty ? Homepage : "Homepage:" + Homepage)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(Address2)}{ReplaceSpecialSymbolsWithEmptyString(Phone2 == string.Empty ? Phone2 : "P:" + Phone2)}" +
+                        $"{ReplaceSpecialSymbolsWithEmptyString(Notes)}").Trim();
                 }
             }
             set
@@ -121,7 +121,7 @@ namespace addressbook_web_test
         {
             return Lastname.GetHashCode();
         }
-        private string CleanUp(string phone)
+        private string ReplaceNotVisibleInFormSymbols(string phone)
         {
             if (phone == null || phone == "")
             {
@@ -130,7 +130,7 @@ namespace addressbook_web_test
             return Regex.Replace(phone, "[(). -]", "") + "\r\n";
         }
 
-        private string LineBreak(string data)
+        private string AddLineBreakSymbol(string data)
         {
             if (data == null || data == "")
             {
@@ -138,7 +138,7 @@ namespace addressbook_web_test
             }
             return data + "\r\n";
         }
-        private string Delete(string data)
+        private string ReplaceSpecialSymbolsWithEmptyString(string data)
         {
             if (data == null || data == "")
             {
