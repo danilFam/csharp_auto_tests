@@ -34,5 +34,10 @@ namespace addressbook_web_test
         {
             return Name.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

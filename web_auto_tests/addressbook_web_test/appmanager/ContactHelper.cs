@@ -72,20 +72,15 @@ namespace addressbook_web_test
             manager.Navigator.OpenHomePage();
             IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index - 1]
                  .FindElements(By.TagName("td"));
-            string lastName = cells[1].Text;
-            string firstName = cells[2].Text;
-            string address = cells[3].Text;
-            string allEmails = cells[4].Text;
-            string allPhones = cells[5].Text;
-            return new ContactFormData()
+            ContactFormData contactInformationFromTable = new ContactFormData()
             {
-                Firstname = firstName,
-                Lastname = lastName,
-                Address = address,
-                AllPhones = allPhones,
-                AllEmails = allEmails
+                Lastname = cells[1].Text,
+                Firstname = cells[2].Text,
+                Address = cells[3].Text,
+                AllEmails = cells[4].Text,
+                AllPhones = cells[5].Text
             };
-
+            return contactInformationFromTable;
         }
 
         public double GetContactCount()
