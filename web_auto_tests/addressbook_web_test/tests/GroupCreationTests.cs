@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace addressbook_web_test
 {
@@ -41,8 +44,15 @@ namespace addressbook_web_test
             return groups;
         }
 
-        [Test, TestCaseSource("RandomGroupDataProvider")]
-        public void NewGroupRandom(GroupFormData newGroup)
+        public static IEnumerable<GroupFormData> GroupDataFromXmlFile()
+        {
+            return (List<GroupFormData>)
+                new XmlSerializer(typeof(List<GroupFormData>))
+                .Deserialize(new StreamReader(TestContext.CurrentContext.TestDirectory + @"\groups.xml"));
+        }
+
+        [Test, TestCaseSource("GroupDataFromXmlFile")]
+        public void NewGroupFromXmlFile(GroupFormData newGroup)
         {
             List<GroupFormData> oldGroups = app.Groups.GetGroupList();
 
