@@ -121,6 +121,10 @@ namespace addressbook_web_test
         {
             return Lastname.GetHashCode();
         }
+        public override string ToString()
+        {
+            return Firstname;
+        }
         private string ReplaceNotVisibleInFormSymbols(string phone)
         {
             if (phone == null || phone == "")

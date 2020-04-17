@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,33 +15,80 @@ namespace addressbook_test_data_generators
     {
         static void Main(string[] args)
         {
-            int count = Convert.ToInt32(args[0]);
-            StreamWriter writer = new StreamWriter(args[1]);
-            string format = args[2];
+            string type = args[0];
+            int count = Convert.ToInt32(args[1]);
+            StreamWriter writer = new StreamWriter(args[2]);
+            string format = args[3];
 
-            List<GroupFormData> groups = new List<GroupFormData>();
-            for (int i = 0; i < count; i++)
+            if (type == "contacts")
             {
-                groups.Add(new GroupFormData()
+                List<ContactFormData> contacts = new List<ContactFormData>();
+                for (int i = 0; i < count; i++)
                 {
-                    Name = TestBase.GenerateRandomString(10),
-                    Header = TestBase.GenerateRandomString(20),
-                    Footer = TestBase.GenerateRandomString(20)
-                });
+                    contacts.Add(new ContactFormData()
+                    {
+                        Firstname = TestBase.GenerateRandomString(10),
+                        Lastname = TestBase.GenerateRandomString(30),
+                        Homepage = TestBase.GenerateRandomString(30),
+                        Email = TestBase.GenerateRandomString(20),
+                    });
+                }
+                if (format == "xml")
+                {
+                    WriteContactsToXmlFile(contacts, writer);
+                }
+                else if (format == "json")
+                {
+                    WriteContactsToJsonFile(contacts, writer);
+                }
             }
-            if (format == "xml")
+            else if (type == "groups")
             {
-                WriteGroupsToXmlFile(groups, writer);
+                List<GroupFormData> groups = new List<GroupFormData>();
+                for (int i = 0; i < count; i++)
+                {
+                    groups.Add(new GroupFormData()
+                    {
+                        Name = TestBase.GenerateRandomString(10),
+                        Header = TestBase.GenerateRandomString(20),
+                        Footer = TestBase.GenerateRandomString(20)
+                    });
+                }
+                if (format == "xml")
+                {
+                    WriteGroupsToXmlFile(groups, writer);
+                }
+                else if (format == "json")
+                {
+                    WriteGroupsToJsonFile(groups, writer);
+                }
+                else
+                {
+                    Console.Out.Write("Unrecognized format" + format);
+                }
             }
-            else
-            {
-                Console.Out.Write("Unrecognized format" + format);
-            }
+            
         }
 
         static void WriteGroupsToXmlFile(List<GroupFormData> groups, StreamWriter writer)
         {
             new XmlSerializer(typeof(List<GroupFormData>)).Serialize(writer, groups);
+        }
+        static void WriteGroupsToJsonFile(List<GroupFormData> groups, StreamWriter writer)
+        {
+            string groupsSerialized = JsonConvert.SerializeObject(groups, Newtonsoft.Json.Formatting.Indented);
+            writer.Write(groupsSerialized);
+            writer.Close();
+        }
+        static void WriteContactsToXmlFile(List<ContactFormData> contacts, StreamWriter writer)
+        {
+            new XmlSerializer(typeof(List<ContactFormData>)).Serialize(writer, contacts);
+        }
+        static void WriteContactsToJsonFile(List<ContactFormData> contacts, StreamWriter writer)
+        {
+            string contactsSerialized = JsonConvert.SerializeObject(contacts, Newtonsoft.Json.Formatting.Indented);
+            writer.Write(contactsSerialized);
+            writer.Close();
         }
     }
 }

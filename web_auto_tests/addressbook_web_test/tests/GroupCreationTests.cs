@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace addressbook_web_test
 {
@@ -46,13 +47,35 @@ namespace addressbook_web_test
 
         public static IEnumerable<GroupFormData> GroupDataFromXmlFile()
         {
-            return (List<GroupFormData>)
-                new XmlSerializer(typeof(List<GroupFormData>))
-                .Deserialize(new StreamReader(TestContext.CurrentContext.TestDirectory + @"\groups.xml"));
+            var path = TestContext.CurrentContext.TestDirectory + @"\groups.xml";
+            var serializedGroups = new XmlSerializer(typeof(List<GroupFormData>))
+                .Deserialize(new StreamReader(path));
+            return (List<GroupFormData>)serializedGroups;
         }
 
         [Test, TestCaseSource("GroupDataFromXmlFile")]
         public void NewGroupFromXmlFile(GroupFormData newGroup)
+        {
+            List<GroupFormData> oldGroups = app.Groups.GetGroupList();
+
+            app.Groups.Create(newGroup);
+
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
+
+            List<GroupFormData> newGroups = app.Groups.GetGroupList();
+            oldGroups.Add(newGroup);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+        }
+        public static IEnumerable<GroupFormData> GroupDataFromJsonFile()
+        {
+            string path = TestContext.CurrentContext.TestDirectory + @"\groups.json";
+            return JsonConvert.DeserializeObject<List<GroupFormData>>(File.ReadAllText(path));
+        }
+
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
+        public void NewGroupFromJsonFile(GroupFormData newGroup)
         {
             List<GroupFormData> oldGroups = app.Groups.GetGroupList();
 
