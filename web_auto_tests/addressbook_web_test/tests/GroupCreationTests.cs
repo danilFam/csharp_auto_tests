@@ -45,7 +45,7 @@ namespace addressbook_web_test
 
         public static IEnumerable<GroupFormData> GroupDataFromXmlFile()
         {
-            var path = TestContext.CurrentContext.TestDirectory + @"\groups.xml";
+            var path = TestContext.CurrentContext.TestDirectory + @"..\..\..\..\addressbook-test-data-generators\bin\Debug" + @"\groups.xml";
             var serializedGroups = new XmlSerializer(typeof(List<GroupFormData>))
                 .Deserialize(new StreamReader(path));
             return (List<GroupFormData>)serializedGroups;
@@ -68,7 +68,7 @@ namespace addressbook_web_test
         }
         public static IEnumerable<GroupFormData> GroupDataFromJsonFile()
         {
-            string path = TestContext.CurrentContext.TestDirectory + @"\groups.json";
+            string path = TestContext.CurrentContext.TestDirectory + @"..\..\..\..\addressbook-test-data-generators\bin\Debug" + @"\groups.json";
             return JsonConvert.DeserializeObject<List<GroupFormData>>(File.ReadAllText(path));
         }
 

@@ -31,7 +31,7 @@ namespace addressbook_web_test
         }
         public static IEnumerable<ContactFormData> ContactDataFromXmlFile()
         {
-            string path = TestContext.CurrentContext.TestDirectory + @"\contacts.xml";
+            string path = TestContext.CurrentContext.TestDirectory + @"..\..\..\..\addressbook-test-data-generators\bin\Debug" + @"\contacts.xml";
             var serializedContacts = new XmlSerializer(typeof(List<ContactFormData>))
                 .Deserialize(new StreamReader(path));
             return (List<ContactFormData>)serializedContacts;

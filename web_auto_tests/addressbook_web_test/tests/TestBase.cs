@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using OpenQA.Selenium;
 using System;
 using System.Text;
 
@@ -12,6 +14,26 @@ namespace addressbook_web_test
         public void SetUpApplicationManager()
         {
             app = ApplicationManager.GetInstance();
+        }
+
+        [TearDown]
+        public void TakeScreenShotIfTestFails()
+        {
+            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+            {
+                var fileName = TestContext.CurrentContext.TestDirectory + "\\" +
+                               DateTime.Now.ToString("yy-MM-dd-HH-mm-ss-FFF") + "-" + GetType().Name + "-" +
+                               TestContext.CurrentContext.Test.MethodName + "." + ScreenshotImageFormat.Jpeg;
+                try
+                {
+                    ((ITakesScreenshot)app.Driver).GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Jpeg);
+                    TestContext.AddTestAttachment(fileName);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
         }
 
         public static Random rnd = new Random();
