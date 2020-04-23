@@ -5,21 +5,21 @@ namespace addressbook_web_test
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
-    public class ContactRemovalTests : AuthTestBase
+    public class ContactRemovalTests : ContactTestBase
     {
         [Test]
         public void ContactRemove()
         {
             const int contactToRemoveIndex = 1;
 
-            List<ContactFormData> oldContacts = app.Contacts.GetContactList();
+            List<ContactFormData> oldContacts = ContactFormData.GetAllContacts();
             ContactFormData toBeRemoved = oldContacts[0];
 
-            app.Contacts.Remove(contactToRemoveIndex);
+            app.Contacts.Remove(toBeRemoved);
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
 
-            List<ContactFormData> newContacts = app.Contacts.GetContactList();
+            List<ContactFormData> newContacts = ContactFormData.GetAllContacts();
             oldContacts.RemoveAt(0);
             oldContacts.Sort();
             newContacts.Sort();

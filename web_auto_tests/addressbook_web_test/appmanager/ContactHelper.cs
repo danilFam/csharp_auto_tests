@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System;
 
 namespace addressbook_web_test
 {
@@ -132,12 +133,34 @@ namespace addressbook_web_test
 
             return this;
         }
+        public ContactHelper Modify(ContactFormData newData, ContactFormData oldData)
+        {
+            CreateContactIfNotExists();
+
+            InitContactModification(oldData.Id);
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToHomePage();
+
+            return this;
+        }
 
         public ContactHelper Remove(int contactToRemoveIndex)
         {
             CreateContactIfNotExists();
 
             SelectContact(contactToRemoveIndex);
+            RemoveContact();
+            manager.Navigator.OpenHomePage();
+
+            return this;
+        }
+
+        public ContactHelper Remove(ContactFormData contact)
+        {
+            CreateContactIfNotExists();
+
+            SelectContact(contact.Id);
             RemoveContact();
             manager.Navigator.OpenHomePage();
 
@@ -212,6 +235,11 @@ namespace addressbook_web_test
             driver.FindElement(By.XPath("(//td[@class='center']/*[@type='checkbox'])[" + contactToRemoveIndex + "]")).Click();
             return this;
         }
+        public ContactHelper SelectContact(string id)
+        {
+            driver.FindElement(By.XPath("(//td[@class='center']/*[@type='checkbox' and @value='" + id + "'])")).Click();
+            return this;
+        }
 
         public ContactHelper SubmitContactModification()
         {
@@ -225,6 +253,12 @@ namespace addressbook_web_test
             driver.FindElement(By.XPath("(//td[@class='center']//*[@title='Edit'])[" + index + "]")).Click();
             return this;
         }
+        public ContactHelper InitContactModification(string id)
+        {
+            driver.FindElement(By.XPath("(//td[@class='center']//*[@href='edit.php?id=" + id + "'])")).Click();
+            return this;
+        }
+
         private void ShowContactDetails(int index)
         {
             driver.FindElement(By.XPath("(//td[@class='center']//*[@title='Details'])[" + index + "]")).Click();

@@ -5,21 +5,21 @@ namespace addressbook_web_test
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
-    public class GroupRemovalTests : AuthTestBase
+    public class GroupRemovalTests : GroupTestBase
     {
         [Test]
         public void GroupRemove()
         {
             const int groupToRemoveIndex = 1;
 
-            List<GroupFormData> oldGroups = app.Groups.GetGroupList();
+            List<GroupFormData> oldGroups = GroupFormData.GetAllGroups();
+            GroupFormData toBeRemoved = oldGroups[0];
 
-            app.Groups.Remove(groupToRemoveIndex);
+            app.Groups.Remove(toBeRemoved);
 
             Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
 
-            List<GroupFormData> newGroups = app.Groups.GetGroupList();
-            GroupFormData toBeRemoved = oldGroups[0];
+            List<GroupFormData> newGroups = GroupFormData.GetAllGroups();
             oldGroups.RemoveAt(0);
             oldGroups.Sort();
             newGroups.Sort();

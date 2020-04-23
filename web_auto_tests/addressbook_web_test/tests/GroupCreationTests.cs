@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace addressbook_web_test
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
 
         [Test]
         public void NewGroup()
         {
-            List<GroupFormData> oldGroups = app.Groups.GetGroupList();
+            List<GroupFormData> oldGroups = GroupFormData.GetAllGroups();
 
             var newGroup = new GroupBuilder().Build();
 
@@ -22,7 +24,7 @@ namespace addressbook_web_test
 
             Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
 
-            List<GroupFormData> newGroups = app.Groups.GetGroupList();
+            List<GroupFormData> newGroups = GroupFormData.GetAllGroups();
             oldGroups.Add(newGroup);
             oldGroups.Sort();
             newGroups.Sort();
@@ -86,6 +88,19 @@ namespace addressbook_web_test
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
+        }
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now;
+            List<GroupFormData> fromUi = app.Groups.GetGroupList();
+            DateTime finish = DateTime.Now;
+            System.Console.Out.WriteLine(finish.Subtract(start));
+
+            start = DateTime.Now;
+            List<GroupFormData> fromDB = GroupFormData.GetAllGroups();
+            finish = DateTime.Now;
+            System.Console.Out.WriteLine(finish.Subtract(start));
         }
     }
 }

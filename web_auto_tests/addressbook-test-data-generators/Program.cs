@@ -14,11 +14,11 @@ namespace addressbook_test_data_generators
 
             if (type == "contacts")
             {
-                CreateContactDataFiles.CreateContactFiles(count, writer, format);
+                ContactDataFilesCreator.CreateContactFiles(count, writer, format);
             }
             else if (type == "groups")
             {
-                CreateGroupDataFiles.CreateGroupFiles(count, writer, format);
+                GroupDataFilesCreator.CreateGroupFiles(count, writer, format);
             }
         }
     }

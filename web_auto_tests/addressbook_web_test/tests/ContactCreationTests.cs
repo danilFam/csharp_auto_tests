@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
@@ -8,14 +9,14 @@ namespace addressbook_web_test
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
 
         [Test]
         public void NewContact()
         {
 
-            List<ContactFormData> oldContacts = app.Contacts.GetContactList();
+            List<ContactFormData> oldContacts = ContactFormData.GetAllContacts();
 
             var newContact = new ContactBuilder().Build();
 
@@ -23,7 +24,7 @@ namespace addressbook_web_test
 
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
 
-            List<ContactFormData> newContacts = app.Contacts.GetContactList();
+            List<ContactFormData> newContacts = ContactFormData.GetAllContacts();
             oldContacts.Add(newContact);
             oldContacts.Sort();
             newContacts.Sort();
@@ -72,6 +73,19 @@ namespace addressbook_web_test
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
+        }
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now;
+            List<ContactFormData> fromUi = app.Contacts.GetContactList();
+            DateTime finish = DateTime.Now;
+            System.Console.Out.WriteLine(finish.Subtract(start));
+
+            start = DateTime.Now;
+            List<ContactFormData> fromDB = ContactFormData.GetAllContacts();
+            finish = DateTime.Now;
+            System.Console.Out.WriteLine(finish.Subtract(start));
         }
     }
 }

@@ -7,20 +7,11 @@ using Newtonsoft.Json;
 
 namespace addressbook_test_data_generators
 {
-    class CreateGroupDataFiles
+    class GroupDataFilesCreator
     {
         public static void CreateGroupFiles(int count, StreamWriter writer, string format)
         {
-            List<GroupFormData> groups = new List<GroupFormData>();
-            for (int i = 0; i < count; i++)
-            {
-                groups.Add(new GroupFormData()
-                {
-                    Name = TestBase.GenerateRandomString(10),
-                    Header = TestBase.GenerateRandomString(20),
-                    Footer = TestBase.GenerateRandomString(20)
-                });
-            }
+            List<GroupFormData> groups = InitializeGroups(count);
             if (format == "xml")
             {
                 WriteGroupsToXmlFile(groups, writer);
@@ -34,6 +25,22 @@ namespace addressbook_test_data_generators
                 Console.Out.Write("Unrecognized format" + format);
             }
         }
+
+        private static List<GroupFormData> InitializeGroups(int count)
+        {
+            List<GroupFormData> groups = new List<GroupFormData>();
+            for (int i = 0; i < count; i++)
+            {
+                groups.Add(new GroupFormData()
+                {
+                    Name = TestBase.GenerateRandomString(10),
+                    Header = TestBase.GenerateRandomString(20),
+                    Footer = TestBase.GenerateRandomString(20)
+                });
+            }
+            return groups;
+        }
+
         static void WriteGroupsToXmlFile(List<GroupFormData> groups, StreamWriter writer)
         {
             new XmlSerializer(typeof(List<GroupFormData>)).Serialize(writer, groups);

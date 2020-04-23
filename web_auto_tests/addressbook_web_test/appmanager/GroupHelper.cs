@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 
 namespace addressbook_web_test
@@ -71,6 +72,19 @@ namespace addressbook_web_test
             ReturnToGroupsPage();
             return this;
         }
+        public GroupHelper Modify(GroupFormData oldData, GroupFormData newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+
+            CreateGroupIfNotExist();
+
+            SelectGroup(oldData.Id);
+            InitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+            return this;
+        }
 
         public GroupHelper Remove(int groupToRemoveIndex)
         {
@@ -79,6 +93,17 @@ namespace addressbook_web_test
             CreateGroupIfNotExist();
 
             SelectGroup(groupToRemoveIndex);
+            RemoveGroup();
+            ReturnToGroupsPage();
+            return this;
+        }
+        public GroupHelper Remove(GroupFormData group)
+        {
+            manager.Navigator.GoToGroupsPage();
+
+            CreateGroupIfNotExist();
+
+            SelectGroup(group.Id);
             RemoveGroup();
             ReturnToGroupsPage();
             return this;
@@ -98,6 +123,11 @@ namespace addressbook_web_test
         public GroupHelper SelectGroup(int groupToRemoveIndex)
         {
             driver.FindElement(By.XPath("(//span[@class='group']/*[@type='checkbox'])[" + groupToRemoveIndex + "]")).Click();
+            return this;
+        }
+        public GroupHelper SelectGroup(string id)
+        {
+            driver.FindElement(By.XPath("(//span[@class='group']/*[@type='checkbox' and @value='" + id + "'])")).Click();
             return this;
         }
 

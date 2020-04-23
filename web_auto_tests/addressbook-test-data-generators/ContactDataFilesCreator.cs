@@ -7,21 +7,11 @@ using Newtonsoft.Json;
 
 namespace addressbook_test_data_generators
 {
-    class CreateContactDataFiles
+    class ContactDataFilesCreator
     {
         public static void CreateContactFiles(int count, StreamWriter writer, string format)
         {
-            List<ContactFormData> contacts = new List<ContactFormData>();
-            for (int i = 0; i < count; i++)
-            {
-                contacts.Add(new ContactFormData()
-                {
-                    Firstname = TestBase.GenerateRandomString(10),
-                    Lastname = TestBase.GenerateRandomString(30),
-                    Homepage = TestBase.GenerateRandomString(30),
-                    Email = TestBase.GenerateRandomString(20),
-                });
-            }
+            List<ContactFormData> contacts = InitializeContacts(count);
             if (format == "xml")
             {
                 WriteContactsToXmlFile(contacts, writer);
@@ -35,7 +25,24 @@ namespace addressbook_test_data_generators
                 Console.Out.Write("Unrecognized format" + format);
             }
         }
-        
+
+        private static List<ContactFormData> InitializeContacts(int count)
+        {
+            List<ContactFormData> contacts = new List<ContactFormData>();
+            for (int i = 0; i < count; i++)
+            {
+                contacts.Add(new ContactFormData()
+                {
+                    Firstname = TestBase.GenerateRandomString(10),
+                    Lastname = TestBase.GenerateRandomString(30),
+                    Homepage = TestBase.GenerateRandomString(30),
+                    Email = TestBase.GenerateRandomString(20),
+                });
+            }
+
+            return contacts;
+        }
+
         static void WriteContactsToXmlFile(List<ContactFormData> contacts, StreamWriter writer)
         {
             new XmlSerializer(typeof(List<ContactFormData>)).Serialize(writer, contacts);

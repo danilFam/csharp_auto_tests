@@ -1,32 +1,44 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Linq;
+using LinqToDB.Mapping;
+using System.Collections.Generic;
 
 namespace addressbook_web_test
 {
+    [Table(Name = "addressbook")]
     public class ContactFormData : IEquatable<ContactFormData>, IComparable<ContactFormData>
     {
         private string allPhones;
         private string allEmails;
         private string allInformation;
-
+        [Column(Name = "firstname")]
         public string Firstname { get; set; }
         public string Middlename { get; set; } = "";
+        [Column(Name = "lastname")]
         public string Lastname { get; set; }
         public string Nickname { get; set; } = "";
         public string Title { get; set; } = "";
+        [Column(Name = "company")]
         public string Company { get; set; }
+        [Column(Name = "address")]
         public string Address { get; set; }
         public string HomePhone { get; set; } = "";
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
         public string WorkPhone { get; set; } = "";
         public string Fax { get; set; } = "";
+        [Column(Name = "email")]
         public string Email { get; set; }
         public string Email2 { get; set; } = "";
         public string Email3 { get; set; } = "";
+        [Column(Name = "homepage")]
         public string Homepage { get; set; }
+        [Column(Name = "address2")]
         public string Address2 { get; set; }
         public string Phone2 { get; set; } = "";
         public string Notes { get; set; } = "";
+        [Column(Name = "id"), Identity, PrimaryKey]
         public string Id { get; set; }
         public string AllPhones
         {
@@ -149,6 +161,13 @@ namespace addressbook_web_test
                 return "";
             }
             return Regex.Replace(data, @"[\n\t\r\s]", "");
+        }
+        public static List<ContactFormData> GetAllContacts()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                return (from g in db.Contacts select g).ToList();
+            }
         }
     }
 }

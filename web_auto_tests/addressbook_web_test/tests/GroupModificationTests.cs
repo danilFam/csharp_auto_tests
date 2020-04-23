@@ -5,7 +5,7 @@ namespace addressbook_web_test
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
-    public class GroupModificationTests : AuthTestBase
+    public class GroupModificationTests : GroupTestBase
     {
         [Test]
 
@@ -14,14 +14,14 @@ namespace addressbook_web_test
             var newData = new GroupBuilder().Build();
             const int groupToModifyIndex = 1;
 
-            List<GroupFormData> oldGroups = app.Groups.GetGroupList();
+            List<GroupFormData> oldGroups = GroupFormData.GetAllGroups();
             GroupFormData oldData = oldGroups[0];
 
-            app.Groups.Modify(groupToModifyIndex, newData);
+            app.Groups.Modify(oldData, newData);
 
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
-            List<GroupFormData> newGroups = app.Groups.GetGroupList();
+            List<GroupFormData> newGroups = GroupFormData.GetAllGroups();
             oldGroups[0].Name = newData.Name;
             oldGroups.Sort();
             newGroups.Sort();
